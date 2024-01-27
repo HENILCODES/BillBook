@@ -13,7 +13,11 @@ class ViewUser extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
+            Actions\EditAction::make()->icon('heroicon-m-pencil-square'),
+            Actions\DeleteAction::make()->icon('heroicon-m-trash')->requiresConfirmation()
+                ->modalHeading('Delete User?')
+                ->modalDescription('Are you sure you want to delete this user? This action cannot be undone.')
+                ->modalSubmitActionLabel('Confirm Deletion'),
         ];
     }
 }

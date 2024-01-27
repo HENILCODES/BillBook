@@ -6,12 +6,16 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 
 class UserResource extends Resource
 {
@@ -30,7 +34,7 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()
-                    ->required()
+                    ->required()->autocomplete(false)
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
                     ->password()
@@ -50,10 +54,10 @@ class UserResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
+                    ->dateTime('d F Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime('d F Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
@@ -67,10 +71,10 @@ class UserResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make()->icon('heroicon-s-eye')->iconButton(),
                 Tables\Actions\EditAction::make()
-                ->icon('heroicon-s-pencil-square')->iconButton()
-                ->action(fn (User $record) => $record->update())
-                ->modalHeading('Edit User')
-                ->modalDescription('Update the user information below.'),            
+                    ->icon('heroicon-s-pencil-square')->iconButton()
+                    ->action(fn (User $record) => $record->update())
+                    ->modalHeading('Edit User')
+                    ->modalDescription('Update the user information below.'),
                 Tables\Actions\DeleteAction::make()->icon('heroicon-m-trash')->iconButton()
                     ->requiresConfirmation()
                     ->modalHeading('Delete User?')
@@ -80,9 +84,9 @@ class UserResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()->icon('heroicon-m-trash')->requiresConfirmation()
-                    ->modalHeading('Delete User?')
-                    ->modalDescription('Are you sure you want to delete this user? This action cannot be undone.')
-                    ->modalSubmitActionLabel('Confirm Deletion'),
+                        ->modalHeading('Delete User?')
+                        ->modalDescription('Are you sure you want to delete this user? This action cannot be undone.')
+                        ->modalSubmitActionLabel('Confirm Deletion'),
                 ]),
             ]);
     }
@@ -100,7 +104,20 @@ class UserResource extends Resource
             'index' => Pages\ListUsers::route('/'),
             // 'create' => Pages\CreateUser::route('/create'),
             // 'view' => Pages\ViewUser::route('/{record}'),
-            // 'edit' => Pages\EditUser::route('/{record}/edit'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist->schema([
+            Section::make()->schema([
+                TextEntry::make('name')->color('primary'),
+                TextEntry::make('email')->copyable()->copyMessage('Copied!')->copyMessageDuration(1500),
+                TextEntry::make('email_verified_at')->dateTime('d F Y'),
+                TextEntry::make('updated_at')->since(),
+                TextEntry::make('created_at')->dateTime('d F Y'),
+            ])->columns(3)
+        ]);
     }
 }

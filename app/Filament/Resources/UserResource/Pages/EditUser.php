@@ -13,14 +13,13 @@ class EditUser extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make()->icon('heroicon-m-trash')->iconButton()
-                    ->requiresConfirmation()
-                    ->modalHeading('Delete User?')
-                    ->modalDescription('Are you sure you want to delete this user? This action cannot be undone.')
-                    ->modalSubmitActionLabel('Confirm Deletion'),
+            Actions\DeleteAction::make()->icon('heroicon-m-trash')->requiresConfirmation()
+                ->modalHeading('Delete User?')
+                ->modalDescription('Are you sure you want to delete this user? This action cannot be undone.')
+                ->modalSubmitActionLabel('Confirm Deletion'),
         ];
     }
-protected function getRedirectUrl(): string
+    protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
     }
