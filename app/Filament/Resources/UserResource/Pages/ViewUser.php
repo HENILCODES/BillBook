@@ -4,14 +4,16 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use Filament\Actions;
-use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\ViewRecord;
 
-class CreateUser extends CreateRecord
+class ViewUser extends ViewRecord
 {
     protected static string $resource = UserResource::class;
 
-    protected function getRedirectUrl(): string
+    protected function getHeaderActions(): array
     {
-        return $this->getResource()::getUrl('index'); 
+        return [
+            Actions\EditAction::make(),
+        ];
     }
 }

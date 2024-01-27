@@ -66,12 +66,23 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->icon('heroicon-s-eye')->iconButton(),
-                Tables\Actions\EditAction::make()->icon('heroicon-m-pencil-square')->iconButton(),
-                Tables\Actions\DeleteAction::make()->icon('heroicon-m-trash')->iconButton(),
+                Tables\Actions\EditAction::make()
+                ->icon('heroicon-s-pencil-square')->iconButton()
+                ->action(fn (User $record) => $record->update())
+                ->modalHeading('Edit User')
+                ->modalDescription('Update the user information below.'),            
+                Tables\Actions\DeleteAction::make()->icon('heroicon-m-trash')->iconButton()
+                    ->requiresConfirmation()
+                    ->modalHeading('Delete User?')
+                    ->modalDescription('Are you sure you want to delete this user? This action cannot be undone.')
+                    ->modalSubmitActionLabel('Confirm Deletion'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->icon('heroicon-m-trash')->requiresConfirmation()
+                    ->modalHeading('Delete User?')
+                    ->modalDescription('Are you sure you want to delete this user? This action cannot be undone.')
+                    ->modalSubmitActionLabel('Confirm Deletion'),
                 ]),
             ]);
     }
@@ -87,8 +98,9 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            // 'create' => Pages\CreateUser::route('/create'),
+            // 'view' => Pages\ViewUser::route('/{record}'),
+            // 'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }
