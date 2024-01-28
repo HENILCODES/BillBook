@@ -1,35 +1,31 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\Pages;
+namespace App\Filament\Resources\CustomerResource\Pages;
 
-use App\Filament\Resources\UserResource;
+use App\Filament\Resources\CustomerResource;
 use Filament\Actions;
 use Filament\Infolists\Components\ImageEntry;
-use Filament\Resources\Pages\ViewRecord;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\ViewRecord;
 
-class ViewUser extends ViewRecord
+class ViewCustomer extends ViewRecord
 {
-    protected static string $resource = UserResource::class;
-    // protected static string $na
+    protected static string $resource = CustomerResource::class;
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make()->icon('heroicon-m-pencil-square'),
-            Actions\DeleteAction::make()->icon('heroicon-m-trash')->requiresConfirmation()
-                ->modalHeading('Delete User?')
-                ->modalDescription('Are you sure you want to delete this user? This action cannot be undone.')
-                ->modalSubmitActionLabel('Yes, delete it'),
+            Actions\EditAction::make(),
         ];
     }
-
     public function infolist(Infolist $infolist): Infolist
     {
         return $infolist->schema([
 
             Section::make()->schema([
+                ImageEntry::make('photo')->label('Profile Photo')->circular()->columnSpanFull(),
                 TextEntry::make('name'),
                 TextEntry::make('email')->copyable()->copyMessage('Copied!')->copyMessageDuration(1500),
                 TextEntry::make('email_verified_at')->dateTime('d F Y'),

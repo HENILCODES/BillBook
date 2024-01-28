@@ -18,6 +18,7 @@ use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
@@ -28,20 +29,23 @@ class UserResource extends Resource
 
     protected static ?string $navigationGroup = 'Setting';
 
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'email'];
+    }
+
+    public static function getGlobalSearchResultTitle(Model $record): string
+    {
+        return $record->name;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                TextInput::make('email')
-                    ->email()->required()->maxLength(255),
-                TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->maxLength(255),
-                FileUpload::make('photo')->image()->imageEditor()->maxSize(2000)->disk('public')->directory('photo')->openable()->downloadable()
+                TextInput::make('name')->required()->maxLength(255),
+                TextInput::make('email')->email()->required()->maxLength(255),
+                TextInput::make('password')->password()->required()->maxLength(255),
             ]);
     }
 
@@ -49,9 +53,10 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                ViewColumn::make('name')->view('avatar.image-text')->label('Users')->searchable(),
+                TextColumn::make('name')->sortable()->searchable(),
+                TextColumn::make('email')->sortable()->searchable(),
                 TextColumn::make('email_verified_at')->dateTime('d F Y')->sortable(),
-                TextColumn::make('updated_at')->dateTime()->sortable()->searchable(),
+                TextColumn::make('updated_at')->since()->sortable()->searchable(),
                 TextColumn::make('created_at')->dateTime('d F Y')->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -59,23 +64,11 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->icon('heroicon-s-eye')->iconButton(),
-                Tables\Actions\EditAction::make()
-                    ->icon('heroicon-s-pencil-square')->iconButton()
-                    ->action(fn (User $record) => $record->update())
-                    ->modalHeading('Edit User')
-                    ->modalDescription('Update the user information below.'),
-                Tables\Actions\DeleteAction::make()->icon('heroicon-m-trash')->iconButton()
-                    ->requiresConfirmation()
-                    ->modalHeading('Delete User?')
-                    ->modalDescription('Are you sure you want to delete this user? This action cannot be undone.')
-                    ->modalSubmitActionLabel('Yes, delete it'),
+                Tables\Actions\EditAction::make()->icon('heroicon-s-pencil-square')->iconButton()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()->icon('heroicon-m-trash')->requiresConfirmation()
-                        ->modalHeading('Delete User?')
-                        ->modalDescription('Are you sure you want to delete this user? This action cannot be undone.')
-                        ->modalSubmitActionLabel('Yes, delete it'),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
