@@ -4,6 +4,7 @@ namespace App\Filament\Resources\CustomerResource\Pages;
 
 use App\Filament\Resources\CustomerResource;
 use Filament\Actions;
+use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
@@ -23,15 +24,24 @@ class ViewCustomer extends ViewRecord
     public function infolist(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-
+            Group::make()->schema([
+                Section::make()->schema([
+                    Group::make()->schema([
+                        ImageEntry::make('photo')->label('')->circular()->columnSpanFull(),
+                    ])->columnSpan(1),
+                    Group::make()->schema([
+                        TextEntry::make('name'),
+                        TextEntry::make('email')->copyable()->copyMessage('Copied!')->copyMessageDuration(1500),
+                        TextEntry::make('phone'),
+                        TextEntry::make('status'),
+                        TextEntry::make('type'),
+                    ])->columns()->columnSpan(3),
+                ])->columns(4),
+            ])->columnSpan(3),
             Section::make()->schema([
-                ImageEntry::make('photo')->label('Profile Photo')->circular()->columnSpanFull(),
-                TextEntry::make('name'),
-                TextEntry::make('email')->copyable()->copyMessage('Copied!')->copyMessageDuration(1500),
-                TextEntry::make('email_verified_at')->dateTime('d F Y'),
                 TextEntry::make('updated_at')->since(),
                 TextEntry::make('created_at')->dateTime('d F Y'),
-            ])->columns(3)
-        ]);
+            ])->columnSpan(1)->columns(['md'=>2,'lg'=>1,'sm'=>2])
+        ])->columns(4);
     }
 }

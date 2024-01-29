@@ -3,7 +3,7 @@
     <div class="font-medium dark:text-white">
         <div>{{ $getRecord()->name }}</div>
         <div class="text-sm text-gray-500 dark:text-gray-500">
-            <span class="px-2 text-sm">{{ $getRecord()->status ? $getRecord()->status : 'admin' }}</span>
+            <span class="px-2 text-sm">{{ $getRecord()->type ? $getRecord()->type : 'admin' }}</span>
         </div>
     </div>
 </div>

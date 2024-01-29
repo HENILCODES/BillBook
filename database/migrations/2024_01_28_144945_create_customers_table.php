@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('email')->nullable();
             $table->string('type');
-            $table->integer('status')->default(1);
+            $table->string('status')->nullable();
             $table->text('photo')->default('customer/default.png');
             $table->longText('description')->nullable();
             $table->softDeletes();

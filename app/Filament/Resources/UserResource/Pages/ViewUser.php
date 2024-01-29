@@ -4,6 +4,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
 use Filament\Actions;
+use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Infolists\Components\Section;
@@ -13,7 +14,7 @@ use Filament\Infolists\Infolist;
 class ViewUser extends ViewRecord
 {
     protected static string $resource = UserResource::class;
-    // protected static string $na
+    
     protected function getHeaderActions(): array
     {
         return [
@@ -29,13 +30,17 @@ class ViewUser extends ViewRecord
     {
         return $infolist->schema([
 
+            Group::make()->schema([
+                Section::make()->schema([
+                    TextEntry::make('name'),
+                    TextEntry::make('email')->copyable()->copyMessage('Copied!')->copyMessageDuration(1500),
+                    TextEntry::make('email_verified_at')->dateTime('d F Y'),
+                ])->columns(2)
+            ])->columnSpan(3),
             Section::make()->schema([
-                TextEntry::make('name'),
-                TextEntry::make('email')->copyable()->copyMessage('Copied!')->copyMessageDuration(1500),
-                TextEntry::make('email_verified_at')->dateTime('d F Y'),
                 TextEntry::make('updated_at')->since(),
                 TextEntry::make('created_at')->dateTime('d F Y'),
-            ])->columns(3)
-        ]);
+            ])->columnSpan(1)
+        ])->columns(4);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\CustomerStatus;
+use App\Enums\CustomerType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,5 +20,10 @@ class Customer extends Model
         'status',
         'photo',
         'description',
+    ];
+
+    protected $cast = [
+        'status'=> CustomerStatus::class,
+        'type'=> CustomerType::class,
     ];
 }
