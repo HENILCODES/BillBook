@@ -14,7 +14,7 @@ class EditCustomer extends EditRecord
     {
         return [
             Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            // Actions\DeleteAction::make(),
         ];
     }
     protected function getRedirectUrl(): string
