@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/home', function () {
     return view('welcome');
 });
+// Route::get('/login/test', function () {
+//     return redirect()->route('filament.admin.auth.login');
+// })->name('login');

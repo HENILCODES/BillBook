@@ -28,7 +28,7 @@ class Customer extends Model
         'type' => CustomerType::class,
     ];
 
-    public function Addresses(): HasMany
+    public function address(): HasMany
     {
         return $this->hasMany(Address::class);
     }
