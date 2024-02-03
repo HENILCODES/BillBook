@@ -32,10 +32,11 @@ class AddressRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('title')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('address')->searchable(),
                 Tables\Columns\TextColumn::make('phone'),
+                Tables\Columns\TextColumn::make('updated_at')->since()->sortable(),
+                Tables\Columns\TextColumn::make('created_at')->since()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
-                
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

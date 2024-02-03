@@ -19,7 +19,6 @@ class Customer extends Model
         'email',
         'type',
         'status',
-        'photo',
         'description',
     ];
 

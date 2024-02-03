@@ -60,7 +60,6 @@ class CustomerResource extends Resource
                 Forms\Components\Select::make('status')
                     ->options(CustomerStatus::class)->searchable(),
                 Forms\Components\Select::make('type')->options(CustomerType::class)->searchable(),
-                Forms\Components\FileUpload::make('photo')->directory('customer'),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
             ])->columns(3);
@@ -73,8 +72,8 @@ class CustomerResource extends Resource
                 ViewColumn::make('name')->view('avatar.image-text')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('phone')->searchable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
-                Tables\Columns\TextColumn::make('status')->badge()->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')->since()->sortable(),
+                Tables\Columns\TextColumn::make('status')->badge()->searchable()->sortable()->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('updated_at')->since()->sortable()->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('created_at')->since()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

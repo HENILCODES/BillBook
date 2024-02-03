@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('type');
             $table->string('status')->nullable();
-            $table->text('photo')->default('customer/default.png');
             $table->longText('description')->nullable();
             $table->softDeletes();
             $table->timestamps();

@@ -26,17 +26,12 @@ class ViewCustomer extends ViewRecord
         return $infolist->schema([
             Group::make()->schema([
                 Section::make()->schema([
-                    Group::make()->schema([
-                        ImageEntry::make('photo')->label('')->circular()->columnSpanFull(),
-                    ])->columnSpan(1),
-                    Group::make()->schema([
-                        TextEntry::make('name'),
-                        TextEntry::make('email')->copyable()->copyMessage('Copied!')->copyMessageDuration(1500),
-                        TextEntry::make('phone'),
-                        TextEntry::make('status'),
-                        TextEntry::make('type'),
-                    ])->columns()->columnSpan(3),
-                ])->columns(4),
+                    TextEntry::make('name'),
+                    TextEntry::make('email')->copyable()->copyMessage('Copied!')->copyMessageDuration(1500),
+                    TextEntry::make('phone'),
+                    TextEntry::make('status'),
+                    TextEntry::make('type'),
+                ])->columns(3),
             ])->columnSpan(3),
             Section::make()->schema([
                 TextEntry::make('updated_at')->since(),
