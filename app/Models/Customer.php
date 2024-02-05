@@ -32,8 +32,8 @@ class Customer extends Model
         return $this->hasMany(Address::class);
     }
 
-    public function products()
+    public function orders()
     {
-        return $this->belongsToMany(Product::class,'customer_product');
+        return $this->hasMany(Order::class);
     }
 }

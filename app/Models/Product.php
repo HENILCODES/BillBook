@@ -27,8 +27,8 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    function customers()
+    function orders()
     {
-        return $this->belongsToMany(Customer::class,'customer_product');
+        return $this->belongsToMany(Order::class);
     }
 }
