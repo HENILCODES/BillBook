@@ -8,6 +8,7 @@ use App\Filament\Resources\AddressResource\RelationManagers\AddressRelationManag
 use App\Filament\Resources\AddressResource\RelationManagers\CustomerRelationManager;
 use App\Filament\Resources\CustomerResource\Pages;
 use App\Filament\Resources\CustomerResource\RelationManagers;
+use App\Filament\Resources\ProductResource\RelationManagers\ProductsRelationManager;
 use App\Models\Address;
 use App\Models\Customer;
 use Filament\Forms;
@@ -95,6 +96,7 @@ class CustomerResource extends Resource
     public static function getRelations(): array
     {
         return [
+            ProductsRelationManager::class,
             AddressRelationManager::class
         ];
     }

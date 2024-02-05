@@ -17,7 +17,11 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
+
+    protected static ?string $navigationGroup = 'Products';
+    protected static ?int $navigationSort =1;
+
 
     public static function form(Form $form): Form
     {
@@ -39,8 +43,8 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('price')->money()->sortable(),
-                Tables\Columns\TextColumn::make('cost_price')->money()->sortable(),
+                Tables\Columns\TextColumn::make('price')->money('INR')->sortable(),
+                Tables\Columns\TextColumn::make('cost_price')->money('INR')->sortable(),
                 Tables\Columns\TextColumn::make('sku')->label('SKU')->numeric()->sortable(),
                 Tables\Columns\TextColumn::make('barcode')->numeric()->sortable(),
                 Tables\Columns\TextColumn::make('brand.name')->searchable()->numeric()->sortable(),
@@ -51,8 +55,8 @@ class ProductResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -73,7 +77,7 @@ class ProductResource extends Resource
         return [
             'index' => Pages\ListProducts::route('/'),
             'create' => Pages\CreateProduct::route('/create'),
-            'view' => Pages\ViewProduct::route('/{record}'),
+            // 'view' => Pages\ViewProduct::route('/{record}'),
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }

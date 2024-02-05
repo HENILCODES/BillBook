@@ -11,13 +11,19 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BrandResource extends Resource
 {
     protected static ?string $model = Brand::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-bookmark-square';
+    
+    protected static ?string $navigationGroup = 'Products';
+    protected static ?int $navigationSort = 2;
+    protected static ?string $recordTitleAttribute = 'name';
+
 
     public static function form(Form $form): Form
     {
@@ -28,13 +34,23 @@ class BrandResource extends Resource
                 Forms\Components\Textarea::make('description')->columnSpanFull(),
             ]);
     }
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name'];
+    }
+
+    public static function getGlobalSearchResultTitle(Model $record): string
+    {
+        return $record->name;
+    }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('website')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('product')->counts('products')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('website')->toggleable(isToggledHiddenByDefault:true)->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -63,8 +79,8 @@ class BrandResource extends Resource
     {
         return [
             'index' => Pages\ListBrands::route('/'),
-            'create' => Pages\CreateBrand::route('/create'),
             'view' => Pages\ViewBrand::route('/{record}'),
+            // 'create' => Pages\CreateBrand::route('/create'),
             'edit' => Pages\EditBrand::route('/{record}/edit'),
         ];
     }
